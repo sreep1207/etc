@@ -1,0 +1,37 @@
+server {
+    listen 80;
+    server_name _;
+    root /var/www/html;
+
+    index index.php index.html index.htm;
+     # Define the log format for detailed logs (if needed)
+    #log_format custom '$remote_addr - $remote_user [$time_local] "$request" '
+    # Accessss log configuration
+    #access_logsssss /var/log/nginx/default.access.log custom;
+
+    location / {
+        try_files $uri /index.php?$query_string;
+    }
+    # Location block for dynamically generated PDF files
+    # PDF files handling
+     #location ~* ^/sites/default/files/(.*\.pdf)$ {
+      #  alias /var/www/html/sites/default/files/$1;
+       # default_type application/pdf;
+        #add_header Content-Disposition 'attachment; filename="$1"' always;
+        #try_files $uri =404;
+    #}
+
+    
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires max;
+        log_not_found off;
+    }
+     # Use the custom log format
+    access_log /var/log/nginx/drupal.log custom_log;
+    error_log /var/log/nginx/drupalerror.log;
+}
