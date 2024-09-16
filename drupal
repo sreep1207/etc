@@ -8,8 +8,11 @@ server {
     #log_format custom '$remote_addr - $remote_user [$time_local] "$request" '
     # Accessss log configuration
     #access_logsssss /var/log/nginx/default.access.log custom;
+   
 
     location / {
+    auth_basic "Restricted Area";  # Custom message for the auth prompt
+    auth_basic_user_file /etc/nginx/basic-auth/abcd-auth/.htpasswd_abcd.conf;
         try_files $uri /index.php?$query_string;
     }
     # Location block for dynamically generated PDF files
